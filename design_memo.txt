@@ -1,0 +1,7 @@
+For this assignment, I created a company directory using a binary tree to organize employees based on who they report to. Each employee has their own node that stores their name and two possible connections, left and right. The team lead is at the top, and other employees are added underneath their managers.
+
+Recursive insertion works by starting at the root and checking if the current employee is the manager we are looking for. If the names match, the program checks whether the selected side is empty before adding the new employee. If the names do not match, the function keeps searching through the left and right sides until it finds the manager or runs out of employees to check.
+
+One challenge with this was making sure the program found the correct manager without accidentally restarting from the root every time the function called itself. I also had to make sure it handled situations where a manager did not exist or already had someone assigned to that side. Using conditions and returning values helped with these problems.
+
+I think trees are useful when information has a clear hierarchy. For example, company reporting structures, folders on a computer, and website elements can all be represented using trees. Compared to a regular list, a tree makes it easier to see how different pieces of information are connected. This assignment helped me understand recursion better and how nodes can work together to organize data.

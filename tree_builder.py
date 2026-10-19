@@ -1,37 +1,76 @@
-class EmployeeNode:
-    '''
-    A class to represent a node in the binary tree.
-    Attributes:
-        name (str): The name of the employee.
-        left (EmployeeNode): The left child node, representing the left subordinate.
-        right (EmployeeNode): The right child node, representing the right subordinate.
-    '''
 
-    # Delete this line and implement the class below
-    pass
+class EmployeeNode:
+    def __init__(self, name):
+        self.name = name
+        self.left = None
+        self.right = None
+
 
 class TeamTree:
-    '''
-    A class to represent a binary tree for managing a team structure.
-    Attributes:
-        root (EmployeeNode): The root node of the tree, representing the team lead.
-    Methods:
-        insert(manager_name, employee_name, side, current_node=None): Inserts a new employee under the specified manager.
-        print_tree(node=None, level=0): Prints the tree structure starting from the given node.
+    def __init__(self):
+        self.root = None
 
-    '''
-    
-    # Delete this line and implement the class below
-    pass
+    def insert(self, manager_name, employee_name, side, current_node=None):
+        first_call = current_node is None
 
-# Test your code here
+        if first_call:
+            current_node = self.root
 
+            if current_node is None:
+                print("No team lead exists yet.")
+                return False
 
+            if side not in ("left", "right"):
+                print("Please choose left or right.")
+                return False
 
+        if current_node.name == manager_name:
+            if side == "left":
+                if current_node.left is None:
+                    current_node.left = EmployeeNode(employee_name)
+                    print(f"✅ {employee_name} added to the LEFT of {manager_name}")
+                else:
+                    print("The left side is already taken.")
 
+            elif side == "right":
+                if current_node.right is None:
+                    current_node.right = EmployeeNode(employee_name)
+                    print(f"✅ {employee_name} added to the RIGHT of {manager_name}")
+                else:
+                    print("The right side is already taken.")
 
+            return True
 
+        if current_node.left is not None:
+            found = self.insert(manager_name, employee_name, side, current_node.left)
+            if found:
+                return True
 
+        if current_node.right is not None:
+            found = self.insert(manager_name, employee_name, side, current_node.right)
+            if found:
+                return True
+
+        if first_call:
+            print(f"Manager {manager_name} was not found.")
+
+        return False
+
+    def print_tree(self, node=None, level=0):
+        if node is None:
+            if level == 0:
+                node = self.root
+            else:
+                return
+
+        if node is None:
+            print("The team is empty.")
+            return
+
+        print("  " * level + "- " + node.name)
+
+        self.print_tree(node.left, level + 1)
+        self.print_tree(node.right, level + 1)
 
 
 # CLI functionality
@@ -44,6 +83,7 @@ def company_directory():
         print("2. Add Employee")
         print("3. Print Team Structure")
         print("4. Exit")
+
         choice = input("Choose an option (1–4): ")
 
         if choice == "1":
@@ -58,15 +98,21 @@ def company_directory():
             manager = input("Enter the manager's name: ")
             employee = input("Enter the new employee's name: ")
             side = input("Should this employee be on the LEFT or RIGHT of the manager? ")
-            side = side.lower()
+            side = side.lower().strip()
+
             tree.insert(manager, employee, side)
 
         elif choice == "3":
-            print("\n🌳  Current Team Structure:")
+            print("\n🌳 Current Team Structure:")
             tree.print_tree()
 
         elif choice == "4":
             print("Good Bye!")
             break
+
         else:
             print("❌ Invalid option. Try again.")
+
+
+if __name__ == "__main__":
+    company_directory()
